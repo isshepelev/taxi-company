@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         UsersCars usersCars = new UsersCars();
         usersCars.setCar(car);
-        usersCars.setUser(user);
+        usersCars.setOwner(user.getUsername());
         usersCarsService.addUsersCars(usersCars);
 
         car.setAvailable(true);

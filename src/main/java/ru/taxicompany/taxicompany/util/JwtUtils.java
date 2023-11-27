@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtils {
     private final String secret = "984hg493gh0439rthr0429uruj2309yh937gc763fe87t3f89723gf";
-    private Duration lifetime = Duration.ofMinutes(10);
+    private Duration lifetime = Duration.ofMinutes(1000);
 
 
     public String generateToken(UserDetails userDetails){

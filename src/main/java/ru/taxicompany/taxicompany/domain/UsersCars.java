@@ -1,6 +1,7 @@
 package ru.taxicompany.taxicompany.domain;
 
 import lombok.Data;
+import ru.taxicompany.taxicompany.dto.UserInfoDTO;
 
 import javax.persistence.*;
 
@@ -11,9 +12,7 @@ public class UsersCars {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "usersCars_user")
-    private User user;
+    private String owner;
 
     @OneToOne
     @JoinColumn(name = "usersCars_car")
