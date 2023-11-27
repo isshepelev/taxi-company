@@ -42,7 +42,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .cors().disable()
-                .authorizeRequests().antMatchers("/secured/**").authenticated()
+                .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/all/**").permitAll()
@@ -55,8 +55,6 @@ public class SecurityConfig {
                 .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
-
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
