@@ -13,7 +13,6 @@ import ru.taxicompany.taxicompany.domain.User;
 import ru.taxicompany.taxicompany.dto.JwtRequest;
 import ru.taxicompany.taxicompany.dto.JwtResponse;
 import ru.taxicompany.taxicompany.dto.RegistrationUserDTO;
-import ru.taxicompany.taxicompany.dto.UserDTO;
 import ru.taxicompany.taxicompany.exception.AppError;
 import ru.taxicompany.taxicompany.service.AuthService;
 import ru.taxicompany.taxicompany.service.UserService;
@@ -49,7 +48,6 @@ public class AuthServiceImpl implements AuthService {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с указанным именем уже существует " + registrationUserDTO.getUsername()), HttpStatus.BAD_REQUEST);
         }
 
-        User user = userService.createNewUser(registrationUserDTO);
-        return ResponseEntity.ok(new UserDTO(user.getUsername()));
+        return ResponseEntity.ok("successful");
     }
 }
