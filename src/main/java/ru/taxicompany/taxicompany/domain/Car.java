@@ -19,4 +19,5 @@ public class Car {
     private String manufacturer;
     private int year;
     private int mileage;
+    private boolean available;
 }
