@@ -29,6 +29,7 @@ public class CarServiceImpl implements CarService {
         car.setModel(carDTO.getModel());
         car.setManufacturer(carDTO.getManufacturer());
         car.setMileage(0);
+        car.setAvailable(false);
         return carRepository.save(car);
     }
 
@@ -40,5 +41,10 @@ public class CarServiceImpl implements CarService {
     @Override
     public void deleteCar(Long id) {
         carRepository.deleteById(id);
+    }
+
+    @Override
+    public void save(Car car) {
+        carRepository.save(car);
     }
 }
