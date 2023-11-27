@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
         if (userService.findByUsername(registrationUserDTO.getUsername()).isPresent()){
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с указанным именем уже существует " + registrationUserDTO.getUsername()), HttpStatus.BAD_REQUEST);
         }
-
+        userService.createNewUser(registrationUserDTO);
         return ResponseEntity.ok("successful");
     }
 }
