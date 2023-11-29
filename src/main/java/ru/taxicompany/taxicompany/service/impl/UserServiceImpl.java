@@ -114,6 +114,42 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public Object returnCar(String name, Long carId) {
+        Optional<User> userOptional = findByUsername(name);
+        Optional<Car> carOptional = carService.findByCarId(carId);
+        if (carOptional.isEmpty()){
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "машина с таким id не найдена"), HttpStatus.BAD_REQUEST);
+        }
+
+        Car car = carOptional.get();
+        User user = userOptional.get();
+
+
+
+        Optional<UsersCars> usersCarsOptional = usersCarsService.getUsersCarsWithHelpCar(car);
+        if (usersCarsOptional.isEmpty()){
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "у пользователя нет этой машины"), HttpStatus.BAD_REQUEST);
+        }
+
+        UsersCars usersCars = usersCarsOptional.get();
+
+        if (usersCars.getOwner().equals(name) && usersCars.getCar().getId().equals(carId)){
+            car.setAvailable(false);
+            car.setMileage(car.getMileage() + 100);
+            carService.save(car);
+
+            usersCarsService.deleteById(usersCars.getId());
+            return ResponseEntity.ok("success");
+        }
+        return null;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
     public ResponseEntity<List<UsersCars>> getAllRentedCars() {
         return ResponseEntity.ok(usersCarsService.getAllUsersCars());
     }

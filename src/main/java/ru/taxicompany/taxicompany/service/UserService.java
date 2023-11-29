@@ -21,4 +21,8 @@ public interface UserService extends UserDetailsService {
     Object rentCar(String name, Long carId);
 
     ResponseEntity<List<UsersCars>> getAllRentedCars();
+
+    Object returnCar(String name, Long carId);
+
+    List<User> getAllUsers();
 }
