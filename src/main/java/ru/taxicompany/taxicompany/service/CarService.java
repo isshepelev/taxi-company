@@ -17,4 +17,6 @@ public interface CarService {
     void deleteCar(Long id);
 
     void save(Car car);
+
+    void updateCarUsersCars(Long id);
 }
