@@ -73,9 +73,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         );
     }
 
-
-
-
     @Override
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -130,8 +127,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Car car = carOptional.get();
         User user = userOptional.get();
 
-
-
         Optional<UsersCars> usersCarsOptional = usersCarsService.getUsersCarsWithHelpCar(car);
         if (usersCarsOptional.isEmpty()){
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "у пользователя нет этой машины"), HttpStatus.BAD_REQUEST);
@@ -139,18 +134,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         UsersCars usersCars = usersCarsOptional.get();
 
-        if (usersCars.getOwner().equals(name) && usersCars.getCar().getId().equals(carId)){
-            car.setAvailable(false);
-            car.setMileage(car.getMileage() + 100);
-
-            user.getCars().remove(car);
-            userService.save(user);
-
-            carService.updateCarUsersCars(usersCars.getId());
-            usersCarsService.deleteById(usersCars.getId());
-            return ResponseEntity.ok("success");
+        if (!(usersCars.getOwner().equals(name) && usersCars.getCar().getId().equals(carId))){
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "у пользователя нет этой машины"), HttpStatus.BAD_REQUEST);
         }
-        return null;
+        car.setAvailable(false);
+        car.setMileage(car.getMileage() + 100);
+
+        user.getCars().remove(car);
+        userService.save(user);
+
+        carService.updateCarUsersCars(usersCars.getId());
+        usersCarsService.deleteById(usersCars.getId());
+        return ResponseEntity.ok("success");
     }
 
     @Override
