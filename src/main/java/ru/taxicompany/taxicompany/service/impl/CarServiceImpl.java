@@ -47,4 +47,13 @@ public class CarServiceImpl implements CarService {
     public void save(Car car) {
         carRepository.save(car);
     }
+
+    @Override
+    public void updateCarUsersCars(Long id) {
+        Car car = carRepository.findById(id).orElse(null);
+        if (car != null) {
+            carRepository.save(car);
+        }
+    }
+
 }
