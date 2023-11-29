@@ -12,4 +12,8 @@ public interface AdminService {
     ResponseEntity<?> deleteCar(Long id);
 
     ResponseEntity<List<User>> getAllUser();
+
+    ResponseEntity<?> deleteUser(String username);
+
+    ResponseEntity<?> giveAdmin(String username);
 }
