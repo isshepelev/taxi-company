@@ -32,6 +32,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private PasswordEncoder passwordEncoder;
     private CarService carService;
     private UsersCarsService usersCarsService;
+    private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Autowired
     public void setUsersCarsService(UsersCarsService usersCarsService) {
@@ -136,8 +142,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (usersCars.getOwner().equals(name) && usersCars.getCar().getId().equals(carId)){
             car.setAvailable(false);
             car.setMileage(car.getMileage() + 100);
-            carService.save(car);
 
+            user.getCars().remove(car);
+            userService.save(user);
+
+            carService.updateCarUsersCars(usersCars.getId());
             usersCarsService.deleteById(usersCars.getId());
             return ResponseEntity.ok("success");
         }
@@ -147,6 +156,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void deleteUserByUsername(String username) {
+        userRepository.deleteById(username);
+    }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
     }
 
     @Override
