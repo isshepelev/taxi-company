@@ -25,4 +25,8 @@ public interface UserService extends UserDetailsService {
     Object returnCar(String name, Long carId);
 
     List<User> getAllUsers();
+
+    void deleteUserByUsername(String username);
+
+    void save(User user);
 }
