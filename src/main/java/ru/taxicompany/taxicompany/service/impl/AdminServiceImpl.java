@@ -5,17 +5,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.taxicompany.taxicompany.domain.Car;
+import ru.taxicompany.taxicompany.domain.User;
 import ru.taxicompany.taxicompany.dto.CarDTO;
 import ru.taxicompany.taxicompany.exception.AppError;
 import ru.taxicompany.taxicompany.service.AdminService;
 import ru.taxicompany.taxicompany.service.CarService;
+import ru.taxicompany.taxicompany.service.UserService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
     private final CarService carService;
+    private final UserService userService;
 
 
     @Override
@@ -34,5 +38,10 @@ public class AdminServiceImpl implements AdminService {
         }
         carService.deleteCar(id);
         return ResponseEntity.ok("success");
+    }
+
+    @Override
+    public ResponseEntity<List<User>> getAllUser() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 }
