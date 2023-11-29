@@ -20,8 +20,8 @@ public class UserController {
     public ResponseEntity<?> userRentCar(Principal principal, @PathVariable Long carId){
         return ResponseEntity.ok(userService.rentCar(principal.getName(), carId));
     }
-    @GetMapping("/rented-cars")
-    public ResponseEntity<List<UsersCars>> getRentedCars(){
-        return userService.getAllRentedCars();
+    @PostMapping("/return-car/{carId}")
+    public ResponseEntity<?> userReturnCar(Principal principal, @PathVariable Long carId){
+        return ResponseEntity.ok(userService.returnCar(principal.getName(), carId));
     }
 }
