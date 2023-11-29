@@ -28,4 +28,13 @@ public class AdminController {
     public ResponseEntity<List<User>> getAllUsers(){
         return adminService.getAllUser();
     }
+
+    @PostMapping("/delete/{username}")
+    public ResponseEntity<?> deleteUserByUsername(@PathVariable String username){
+        return adminService.deleteUser(username);
+    }
+    @PostMapping("/give-role/{username}")
+    public ResponseEntity<?> givRoleAdminToUser(@PathVariable String username){
+        return adminService.giveAdmin(username);
+    }
 }
