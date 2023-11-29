@@ -11,6 +11,7 @@ import ru.taxicompany.taxicompany.exception.AppError;
 import ru.taxicompany.taxicompany.service.AdminService;
 import ru.taxicompany.taxicompany.service.CarService;
 import ru.taxicompany.taxicompany.service.UserService;
+import ru.taxicompany.taxicompany.service.UsersCarsService;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class AdminServiceImpl implements AdminService {
     private final CarService carService;
     private final UserService userService;
+    private final UsersCarsService usersCarsService;
 
 
     @Override
@@ -32,9 +34,13 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ResponseEntity<?> deleteCar(Long id) {
-        Optional<Car> car = carService.findByCarId(id);
-        if (car.isEmpty()){
+        Optional<Car> carOptional = carService.findByCarId(id);
+        Car car = carOptional.get();
+        if (carOptional.isEmpty()){
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "машины с таким id не существует"), HttpStatus.BAD_REQUEST);
+        }
+        if (usersCarsService.getUsersCarsWithHelpCar(car).isPresent()){
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "машина находится в пользовании ее нельзя удалить"), HttpStatus.BAD_REQUEST);
         }
         carService.deleteCar(id);
         return ResponseEntity.ok("success");
