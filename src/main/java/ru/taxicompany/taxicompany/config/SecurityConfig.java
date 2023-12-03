@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .antMatchers("/role/**").permitAll()
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/auth").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and().addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
