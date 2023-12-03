@@ -29,7 +29,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ResponseEntity<?> addCar(CarDTO carDTO) {
-        if (!(carDTO.getYear() > 1930 && carDTO.getYear() < 2024)){
+        if (!(carDTO.getYear() > 1900 && carDTO.getYear() < 2024)){
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "указанный вами год не соответствует норме"), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(carService.addNewCar(carDTO));
