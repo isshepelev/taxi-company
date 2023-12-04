@@ -6,8 +6,10 @@ spring:
     driverClassName: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
-  main:
-    allow-circular-references: true
+      ddl-auto: none
 
-#        authenticationspring
+
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
