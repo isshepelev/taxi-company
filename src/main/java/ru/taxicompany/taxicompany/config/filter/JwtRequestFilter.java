@@ -32,12 +32,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")){
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
 
             try {
                 username = jwtUtils.getUsername(jwt);
-            }catch (ExpiredJwtException e) {
+            } catch (ExpiredJwtException e) {
                 log.debug("время жизни токена вышло");
             } catch (SignatureException e) {
                 log.debug("Подпись неверная");
@@ -45,18 +45,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 log.error("Ошибка при обработке токена");
             }
 
-        }else {
+        } else {
             log.debug("Authorization header is missing or does not start with 'Bearer'");
         }
 
-
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username,null, jwtUtils.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, jwtUtils.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
             SecurityContextHolder.getContext().setAuthentication(token);
             log.info("User authenticated " + username);
         }
 
-
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }
