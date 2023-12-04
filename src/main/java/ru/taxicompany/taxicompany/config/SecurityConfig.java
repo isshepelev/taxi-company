@@ -40,7 +40,7 @@ public class SecurityConfig {
     private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .cors().disable()
@@ -65,16 +65,19 @@ public class SecurityConfig {
         daoAuthenticationProvider.setUserDetailsService(userService());
         return daoAuthenticationProvider;
     }
+
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
-    BCryptPasswordEncoder passwordEncoder(){
+    BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
-    UserDetailsService userService(){
-        return new UserServiceImpl(userRepository, roleService,passwordEncoder(),carService,usersCarsService);
+    UserDetailsService userService() {
+        return new UserServiceImpl(userRepository, roleService, passwordEncoder(), carService, usersCarsService);
     }
 }
