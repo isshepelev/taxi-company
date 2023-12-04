@@ -17,11 +17,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/rent-car/{carId}")
-    public ResponseEntity<?> userRentCar(Principal principal, @PathVariable Long carId){
+    public ResponseEntity<?> userRentCar(Principal principal, @PathVariable Long carId) {
         return ResponseEntity.ok(userService.rentCar(principal.getName(), carId));
     }
+
     @PostMapping("/return-car/{carId}")
-    public ResponseEntity<?> userReturnCar(Principal principal, @PathVariable Long carId){
+    public ResponseEntity<?> userReturnCar(Principal principal, @PathVariable Long carId) {
         return ResponseEntity.ok(userService.returnCar(principal.getName(), carId));
     }
 }
