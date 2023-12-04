@@ -12,7 +12,7 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Override
-    public Role getUserRole(){
+    public Role getUserRole() {
         return roleRepository.findByName("ROLE_USER").get();
     }
 
