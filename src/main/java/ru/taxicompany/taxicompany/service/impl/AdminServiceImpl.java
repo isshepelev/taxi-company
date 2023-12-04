@@ -26,10 +26,9 @@ public class AdminServiceImpl implements AdminService {
     private final UserService userService;
     private final UsersCarsService usersCarsService;
 
-
     @Override
     public ResponseEntity<?> addCar(CarDTO carDTO) {
-        if (!(carDTO.getYear() > 1900 && carDTO.getYear() < 2024)){
+        if (!(carDTO.getYear() > 1900 && carDTO.getYear() < 2024)) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "указанный вами год не соответствует норме"), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(carService.addNewCar(carDTO));
@@ -39,10 +38,10 @@ public class AdminServiceImpl implements AdminService {
     public ResponseEntity<?> deleteCar(Long id) {
         Optional<Car> carOptional = carService.findByCarId(id);
         Car car = carOptional.get();
-        if (carOptional.isEmpty()){
+        if (carOptional.isEmpty()) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "машины с таким id не существует"), HttpStatus.BAD_REQUEST);
         }
-        if (usersCarsService.getUsersCarsWithHelpCar(car).isPresent()){
+        if (usersCarsService.getUsersCarsWithHelpCar(car).isPresent()) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "машина находится в пользовании ее нельзя удалить"), HttpStatus.BAD_REQUEST);
         }
         carService.deleteCar(id);
@@ -57,11 +56,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ResponseEntity<?> deleteUser(String username) {
         Optional<User> userOptional = userService.findByUsername(username);
-        if (userOptional.isEmpty()){
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "пользователя с именем " +username+ " не существует"), HttpStatus.BAD_REQUEST);
+        if (userOptional.isEmpty()) {
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "пользователя с именем " + username + " не существует"), HttpStatus.BAD_REQUEST);
         }
         User user = userOptional.get();
-        if (!user.getCars().isEmpty()){
+        if (!user.getCars().isEmpty()) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "пользователь не может быть удален так как он арендует машину"), HttpStatus.BAD_REQUEST);
         }
         userService.deleteUserByUsername(username);
@@ -71,12 +70,12 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ResponseEntity<?> giveAdmin(String username) {
         Optional<User> userOptional = userService.findByUsername(username);
-        if (userOptional.isEmpty()){
+        if (userOptional.isEmpty()) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "пользователя не существует"), HttpStatus.BAD_REQUEST);
         }
 
         User user = userOptional.get();
-        if (user.getRoles().stream().map(Role::getName).anyMatch(name -> name.equals("ROLE_ADMIN"))){
+        if (user.getRoles().stream().map(Role::getName).anyMatch(name -> name.equals("ROLE_ADMIN"))) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "пользователь уже администратор"), HttpStatus.BAD_REQUEST);
         }
         Role role = new Role();
