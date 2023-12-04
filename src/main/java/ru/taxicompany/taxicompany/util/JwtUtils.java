@@ -14,10 +14,9 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtils {
     private final String secret = "984hg493gh0439rthr0429uruj2309yh937gc763fe87t3f89723gf";
-    private Duration lifetime = Duration.ofMinutes(1000);
+    private Duration lifetime = Duration.ofMinutes(5);
 
-
-    public String generateToken(UserDetails userDetails){
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         List<String> roleList = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         claims.put("roles", roleList);
@@ -30,16 +29,18 @@ public class JwtUtils {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(issuedDate)
                 .setExpiration(expiredDate)
-                .signWith(SignatureAlgorithm.HS256,secret).compact();
+                .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
-    public String getUsername(String token){
+    public String getUsername(String token) {
         return getAllClaimsFromToken(token).getSubject();
     }
-    public List<String> getRoles(String token){
+
+    public List<String> getRoles(String token) {
         return getAllClaimsFromToken(token).get("roles", List.class);
     }
-    public Claims getAllClaimsFromToken(String token){
+
+    public Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token)
