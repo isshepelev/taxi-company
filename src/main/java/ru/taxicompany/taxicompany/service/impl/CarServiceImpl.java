@@ -15,7 +15,6 @@ import java.util.Optional;
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
 
-
     @Override
     public List<Car> getAllCars() {
         return carRepository.findAll();
@@ -34,7 +33,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Optional<Car> findByCarId(Long id){
+    public Optional<Car> findByCarId(Long id) {
         return carRepository.findById(id);
     }
 
