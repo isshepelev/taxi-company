@@ -35,14 +35,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final CarService carService;
     private final UsersCarsService usersCarsService;
 
-
-
-
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user =findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(
-                String.format("Пользователь '%s' не найден",username)));
+        User user = findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(
+                String.format("Пользователь '%s' не найден", username)));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
@@ -69,14 +66,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public Object rentCar(String name, Long carId) {
         Optional<User> userOptional = findByUsername(name);
         Optional<Car> carOptional = carService.findByCarId(carId);
-        if (carOptional.isEmpty()){
+        if (carOptional.isEmpty()) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "машина с таким id не найдена"), HttpStatus.BAD_REQUEST);
         }
 
         Car car = carOptional.get();
         User user = userOptional.get();
 
-        if (car.isAvailable()){
+        if (car.isAvailable()) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "машина с таким id уже занята"), HttpStatus.BAD_REQUEST);
         }
 
@@ -98,7 +95,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public Object returnCar(String name, Long carId) {
         Optional<User> userOptional = findByUsername(name);
         Optional<Car> carOptional = carService.findByCarId(carId);
-        if (carOptional.isEmpty()){
+        if (carOptional.isEmpty()) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "машина с таким id не найдена"), HttpStatus.BAD_REQUEST);
         }
 
@@ -106,13 +103,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userOptional.get();
 
         Optional<UsersCars> usersCarsOptional = usersCarsService.getUsersCarsWithHelpCar(car);
-        if (usersCarsOptional.isEmpty()){
+        if (usersCarsOptional.isEmpty()) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "у пользователя нет этой машины"), HttpStatus.BAD_REQUEST);
         }
 
         UsersCars usersCars = usersCarsOptional.get();
 
-        if (!(usersCars.getOwner().equals(name) && usersCars.getCar().getId().equals(carId))){
+        if (!(usersCars.getOwner().equals(name) && usersCars.getCar().getId().equals(carId))) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "у пользователя нет этой машины"), HttpStatus.BAD_REQUEST);
         }
         car.setAvailable(false);
