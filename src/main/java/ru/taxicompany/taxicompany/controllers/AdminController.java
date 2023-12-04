@@ -16,25 +16,27 @@ public class AdminController {
     private final AdminService adminService;
 
     @PostMapping("/add-car")
-    public ResponseEntity<?> addNewCar(@RequestBody CarDTO carDTO){
+    public ResponseEntity<?> addNewCar(@RequestBody CarDTO carDTO) {
         return adminService.addCar(carDTO);
     }
+
     @PostMapping("/delete-car/{id}")
-    public ResponseEntity<?> deleteCar(@PathVariable Long id){
+    public ResponseEntity<?> deleteCar(@PathVariable Long id) {
         return adminService.deleteCar(id);
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<User>> getAllUsers() {
         return adminService.getAllUser();
     }
 
     @PostMapping("/delete/{username}")
-    public ResponseEntity<?> deleteUserByUsername(@PathVariable String username){
+    public ResponseEntity<?> deleteUserByUsername(@PathVariable String username) {
         return adminService.deleteUser(username);
     }
+
     @PostMapping("/give-role/{username}")
-    public ResponseEntity<?> givRoleAdminToUser(@PathVariable String username){
+    public ResponseEntity<?> givRoleAdminToUser(@PathVariable String username) {
         return adminService.giveAdmin(username);
     }
 }
