@@ -21,16 +21,17 @@ public class AllController {
     private final UserService userService;
 
     @GetMapping("/cars")
-    public ResponseEntity<?> getAllCars(){
+    public ResponseEntity<?> getAllCars() {
         return allService.getAll();
     }
 
     @GetMapping("/car/{id}")
-    public ResponseEntity<?> getCat(@PathVariable Long id){
+    public ResponseEntity<?> getCat(@PathVariable Long id) {
         return allService.getCar(id);
     }
+
     @GetMapping("/rented-cars")
-    public ResponseEntity<List<UsersCars>> getRentedCars(){
+    public ResponseEntity<List<UsersCars>> getRentedCars() {
         return userService.getAllRentedCars();
     }
 }
