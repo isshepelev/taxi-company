@@ -26,11 +26,11 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public ResponseEntity<?> createToken(@RequestBody JwtRequest request){
+    public ResponseEntity<?> createToken(@RequestBody JwtRequest request) {
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
-        }catch (BadCredentialsException e){
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        } catch (BadCredentialsException e) {
             return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(), "Неправильный логин или пароль"), HttpStatus.UNAUTHORIZED);
         }
 
@@ -40,11 +40,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDTO registrationUserDTO){
-        if (!registrationUserDTO.getPassword().equals(registrationUserDTO.getConfirmPassword())){
+    public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDTO registrationUserDTO) {
+        if (!registrationUserDTO.getPassword().equals(registrationUserDTO.getConfirmPassword())) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают"), HttpStatus.BAD_REQUEST);
         }
-        if (userService.findByUsername(registrationUserDTO.getUsername()).isPresent()){
+        if (userService.findByUsername(registrationUserDTO.getUsername()).isPresent()) {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователь с указанным именем уже существует " + registrationUserDTO.getUsername()), HttpStatus.BAD_REQUEST);
         }
         userService.createNewUser(registrationUserDTO);
