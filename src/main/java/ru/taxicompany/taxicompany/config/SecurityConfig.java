@@ -1,5 +1,6 @@
 package ru.taxicompany.taxicompany.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,31 +12,32 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.taxicompany.taxicompany.config.filter.JwtRequestFilter;
 import ru.taxicompany.taxicompany.dto.JwtRequest;
+import ru.taxicompany.taxicompany.repository.UserRepository;
+import ru.taxicompany.taxicompany.service.CarService;
+import ru.taxicompany.taxicompany.service.RoleService;
 import ru.taxicompany.taxicompany.service.UserService;
+import ru.taxicompany.taxicompany.service.UsersCarsService;
 import ru.taxicompany.taxicompany.service.impl.UserServiceImpl;
 
 @EnableWebSecurity
 @Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
-    private UserService userService;
-    private JwtRequestFilter jwtRequestFilter;
+    private final UserRepository userRepository;
+    private final RoleService roleService;
+    private final CarService carService;
+    private final UsersCarsService usersCarsService;
 
-    @Autowired
-    public void setJwtRequestFilter(JwtRequestFilter jwtRequestFilter) {
-        this.jwtRequestFilter = jwtRequestFilter;
-    }
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -60,7 +62,7 @@ public class SecurityConfig {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(userService);
+        daoAuthenticationProvider.setUserDetailsService(userService());
         return daoAuthenticationProvider;
     }
     @Bean
@@ -70,5 +72,9 @@ public class SecurityConfig {
     @Bean
     BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+    @Bean
+    UserDetailsService userService(){
+        return new UserServiceImpl(userRepository, roleService,passwordEncoder(),carService,usersCarsService);
     }
 }

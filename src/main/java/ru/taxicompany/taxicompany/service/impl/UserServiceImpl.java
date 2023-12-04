@@ -1,5 +1,6 @@
 package ru.taxicompany.taxicompany.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,39 +27,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
-    private UserRepository userRepository;
-    private RoleService roleService;
-    private PasswordEncoder passwordEncoder;
-    private CarService carService;
-    private UsersCarsService usersCarsService;
-    private UserService userService;
+    private final UserRepository userRepository;
+    private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
+    private final CarService carService;
+    private final UsersCarsService usersCarsService;
 
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
 
-    @Autowired
-    public void setUsersCarsService(UsersCarsService usersCarsService) {
-        this.usersCarsService = usersCarsService;
-    }
-    @Autowired
-    public void setCarService(CarService carService) {
-        this.carService = carService;
-    }
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-    @Autowired
-    public void setRoleService(RoleService roleService) {
-        this.roleService = roleService;
-    }
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
+
 
     @Override
     @Transactional
@@ -141,7 +119,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         car.setMileage(car.getMileage() + 100);
 
         user.getCars().remove(car);
-        userService.save(user);
+        userRepository.save(user);
 
         carService.updateCarUsersCars(usersCars.getId());
         usersCarsService.deleteById(usersCars.getId());
