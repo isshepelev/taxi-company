@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/taxi
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
