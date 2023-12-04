@@ -16,7 +16,6 @@ import java.util.Optional;
 public class AllServiceImpl implements AllService {
     private final CarService carService;
 
-
     @Override
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(carService.getAllCars());
@@ -25,8 +24,8 @@ public class AllServiceImpl implements AllService {
     @Override
     public ResponseEntity<?> getCar(Long id) {
         Optional<Car> car = carService.findByCarId(id);
-        if (car.isEmpty()){
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "машины с таким id не существует"),HttpStatus.BAD_REQUEST);
+        if (car.isEmpty()) {
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "машины с таким id не существует"), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok(carService.findByCarId(id));
     }
