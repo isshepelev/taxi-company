@@ -16,12 +16,12 @@ public class UsersCarsServiceImpl implements UsersCarsService {
     private final UsersCarsRepository usersCarsRepository;
 
     @Override
-    public void addUsersCars(UsersCars usersCars){
+    public void addUsersCars(UsersCars usersCars) {
         usersCarsRepository.save(usersCars);
     }
 
     @Override
-    public List<UsersCars> getAllUsersCars(){
+    public List<UsersCars> getAllUsersCars() {
         return usersCarsRepository.findAll();
     }
 
