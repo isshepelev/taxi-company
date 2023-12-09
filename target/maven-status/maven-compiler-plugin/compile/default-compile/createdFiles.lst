@@ -27,7 +27,6 @@ ru\taxicompany\taxicompany\domain\Role.class
 ru\taxicompany\taxicompany\domain\User.class
 ru\taxicompany\taxicompany\service\CarService.class
 ru\taxicompany\taxicompany\config\filter\JwtRequestFilter.class
-ru\taxicompany\taxicompany\controllers\AddRoleController.class
 ru\taxicompany\taxicompany\dto\RegistrationUserDTO.class
 ru\taxicompany\taxicompany\dto\UserInfoDTO.class
 ru\taxicompany\taxicompany\service\RoleService.class
