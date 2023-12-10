@@ -20,6 +20,7 @@ public class User {
     @Id
     private String username;
     private String password;
+    private String email;
 
     @ManyToMany
     @JoinColumn(name = "users_role")
