@@ -52,12 +52,12 @@ public class TaxiCompanyApplication implements CommandLineRunner {
         List<Role> roleUser = List.of(role1);
         List<Role> roleAdmin = List.of(role2);
         List<User> users = List.of(
-                new User("admin", "$2a$10$DWPvaWiyOkj1p4Fh8yttWOwLssK8ax7k69Swe1UD1rZ5/w9J9m87W", roleAdmin, null),
-                new User("user1", "$2a$10$ee18PJTwkq7J7GhxzCoVhefndBLJCvldBrYIqtW2R4lYYhv4vjjbC", roleUser, null),
-                new User("user2", "$2a$10$ee18PJTwkq7J7GhxzCoVhefndBLJCvldBrYIqtW2R4lYYhv4vjjbC", roleUser, null),
-                new User("user3", "$2a$10$ee18PJTwkq7J7GhxzCoVhefndBLJCvldBrYIqtW2R4lYYhv4vjjbC", roleUser, null),
-                new User("user4", "$2a$10$ee18PJTwkq7J7GhxzCoVhefndBLJCvldBrYIqtW2R4lYYhv4vjjbC", roleUser, null),
-                new User("user5", "$2a$10$ee18PJTwkq7J7GhxzCoVhefndBLJCvldBrYIqtW2R4lYYhv4vjjbC", roleUser, null)
+                new User("admin", "$2a$10$DWPvaWiyOkj1p4Fh8yttWOwLssK8ax7k69Swe1UD1rZ5/w9J9m87W","example@gmail.com", roleAdmin, null),
+                new User("user1", "$2a$10$ee18PJTwkq7J7GhxzCoVhefndBLJCvldBrYIqtW2R4lYYhv4vjjbC","example@gmail.com", roleUser, null),
+                new User("user2", "$2a$10$ee18PJTwkq7J7GhxzCoVhefndBLJCvldBrYIqtW2R4lYYhv4vjjbC","example@gmail.com", roleUser, null),
+                new User("user3", "$2a$10$ee18PJTwkq7J7GhxzCoVhefndBLJCvldBrYIqtW2R4lYYhv4vjjbC","example@gmail.com", roleUser, null),
+                new User("user4", "$2a$10$ee18PJTwkq7J7GhxzCoVhefndBLJCvldBrYIqtW2R4lYYhv4vjjbC","example@gmail.com", roleUser, null),
+                new User("user5", "$2a$10$ee18PJTwkq7J7GhxzCoVhefndBLJCvldBrYIqtW2R4lYYhv4vjjbC","example@gmail.com", roleUser, null)
         );
         userRepository.saveAll(users);
     }
