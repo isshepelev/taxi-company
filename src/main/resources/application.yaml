@@ -24,6 +24,12 @@ spring:
       email: no-reply@example.com
       text: no-reply
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: rabbit
+    password: rabbit
+    virtual-host: email
 
 
 #  flyway:
