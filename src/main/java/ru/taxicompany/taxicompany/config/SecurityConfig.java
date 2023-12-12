@@ -1,6 +1,7 @@
 package ru.taxicompany.taxicompany.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ import ru.taxicompany.taxicompany.service.CarService;
 import ru.taxicompany.taxicompany.service.RoleService;
 import ru.taxicompany.taxicompany.service.UserService;
 import ru.taxicompany.taxicompany.service.UsersCarsService;
+import ru.taxicompany.taxicompany.service.impl.SendEmailMessageService;
 import ru.taxicompany.taxicompany.service.impl.UserServiceImpl;
 
 @EnableWebSecurity
@@ -36,7 +38,7 @@ public class SecurityConfig {
     private final RoleService roleService;
     private final CarService carService;
     private final UsersCarsService usersCarsService;
-
+    private final RabbitTemplate template;
     private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
@@ -78,6 +80,6 @@ public class SecurityConfig {
 
     @Bean
     UserDetailsService userService() {
-        return new UserServiceImpl(userRepository, roleService, passwordEncoder(), carService, usersCarsService);
+        return new UserServiceImpl(userRepository, roleService, passwordEncoder(), carService, usersCarsService,template);
     }
 }
