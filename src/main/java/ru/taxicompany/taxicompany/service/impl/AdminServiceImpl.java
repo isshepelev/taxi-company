@@ -1,10 +1,12 @@
 package ru.taxicompany.taxicompany.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.taxicompany.taxicompany.domain.Car;
+import ru.taxicompany.taxicompany.domain.RegRabbit;
 import ru.taxicompany.taxicompany.domain.Role;
 import ru.taxicompany.taxicompany.domain.User;
 import ru.taxicompany.taxicompany.dto.CarDTO;
@@ -14,6 +16,7 @@ import ru.taxicompany.taxicompany.service.CarService;
 import ru.taxicompany.taxicompany.service.UserService;
 import ru.taxicompany.taxicompany.service.UsersCarsService;
 
+import javax.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +28,7 @@ public class AdminServiceImpl implements AdminService {
     private final CarService carService;
     private final UserService userService;
     private final UsersCarsService usersCarsService;
+    private final RabbitTemplate template;
 
     @Override
     public ResponseEntity<?> addCar(CarDTO carDTO) {
@@ -85,6 +89,14 @@ public class AdminServiceImpl implements AdminService {
         roleAdminList.add(role);
         user.setRoles(roleAdminList);
         userService.save(user);
+
+        RegRabbit rabbit = new RegRabbit();
+        rabbit.setEmail(user.getEmail());
+        rabbit.setName(username);
+        template.setExchange("exchangeEmail");
+        template.convertAndSend("adminKey",rabbit);
+
+
         return ResponseEntity.ok("success");
     }
 }
