@@ -1,13 +1,13 @@
 package ru.taxicompany.taxicompany.service.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import ru.taxicompany.taxicompany.domain.RegRabbit;
+import ru.taxicompany.taxicompany.domain.RentAndReturnRabbit;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -34,5 +34,38 @@ public class SendEmailMessageService {
         context.setVariable("name", name);
         String html = templateEngine.process("registration", context);
         sendEmail(email, "Спасибо что выбираете нас", html);
+    }
+    public void sendAuthEmail(RegRabbit rabbit) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("name", rabbit.getName());
+        String html = templateEngine.process("auth",context);
+        sendEmail(rabbit.getEmail(),"Вход", html);
+    }
+
+    public void sendRentCarEmail(RentAndReturnRabbit rabbit) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("name", rabbit.getName());
+        context.setVariable("manufacturer", rabbit.getCar().getManufacturer());
+        context.setVariable("model", rabbit.getCar().getModel());
+        context.setVariable("price", rabbit.getCar().getPrice());
+        String html = templateEngine.process("rent", context);
+        sendEmail(rabbit.getEmail(), "Аренда", html);
+    }
+
+    public void sendReturnEmail(RentAndReturnRabbit rabbit) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("name", rabbit.getName());
+        context.setVariable("manufacturer", rabbit.getCar().getManufacturer());
+        context.setVariable("model", rabbit.getCar().getModel());
+        context.setVariable("price", rabbit.getCar().getPrice());
+        String html = templateEngine.process("return", context);
+        sendEmail(rabbit.getEmail(), "Возврат", html);
+    }
+
+    public void sendAdminEmail(RegRabbit rabbit) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("name", rabbit.getName());
+        String html = templateEngine.process("admin",context);
+        sendEmail(rabbit.getEmail(), "Админ", html);
     }
 }
