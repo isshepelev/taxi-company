@@ -1,7 +1,7 @@
 package ru.taxicompany.taxicompany.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.taxicompany.taxicompany.domain.Car;
+import ru.taxicompany.taxicompany.domain.RentAndReturnRabbit;
 import ru.taxicompany.taxicompany.domain.User;
 import ru.taxicompany.taxicompany.domain.UsersCars;
 import ru.taxicompany.taxicompany.dto.RegistrationUserDTO;
@@ -21,6 +22,7 @@ import ru.taxicompany.taxicompany.service.RoleService;
 import ru.taxicompany.taxicompany.service.UserService;
 import ru.taxicompany.taxicompany.service.UsersCarsService;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final CarService carService;
     private final UsersCarsService usersCarsService;
+    private final RabbitTemplate template;
 
     @Override
     @Transactional
@@ -89,6 +92,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         car.setAvailable(true);
         carService.save(car);
 
+        template.setExchange("exchangeEmail");
+        RentAndReturnRabbit rabbit = new RentAndReturnRabbit();
+        rabbit.setName(user.getUsername());
+        rabbit.setEmail(user.getEmail());
+        rabbit.setCar(car);
+        template.convertAndSend("rentKey", rabbit);
+
         return ResponseEntity.ok("success");
     }
 
@@ -121,6 +131,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         carService.updateCarUsersCars(usersCars.getId());
         usersCarsService.deleteById(usersCars.getId());
+
+        template.setExchange("exchangeEmail");
+        RentAndReturnRabbit rabbit = new RentAndReturnRabbit();
+        rabbit.setName(user.getUsername());
+        rabbit.setEmail(user.getEmail());
+        rabbit.setCar(car);
+        template.convertAndSend("returnKey", rabbit);
+
         return ResponseEntity.ok("success");
     }
 
